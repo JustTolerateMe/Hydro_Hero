@@ -110,6 +110,26 @@ a {
     box-shadow: 1px 1px 0 var(--black);
 }
 
+/* Mobile Login Button (hidden on desktop, shown on mobile) */
+.nav-mobile-login {
+    display: none;
+    background: var(--black);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    border: 3px solid var(--black);
+    box-shadow: var(--shadow-sm);
+    font-family: var(--font-hero);
+    font-size: 0.7rem;
+    letter-spacing: 1.5px;
+    transition: transform 0.1s, box-shadow 0.1s;
+    align-items: center;
+}
+
+.nav-mobile-login:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--black);
+}
+
 /* ---------- HERO SECTION ---------- */
 .hero {
     position: relative;
@@ -345,6 +365,34 @@ a {
     /* Added for Auth Page */
     background: var(--red);
     color: var(--white);
+}
+
+/* Store Button "Coming Soon" Badges */
+.store-btn-wrap {
+    position: relative;
+    display: inline-flex;
+}
+
+.store-btn-disabled {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.coming-soon-tag {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-family: var(--font-hero);
+    font-size: 0.5rem;
+    letter-spacing: 1.5px;
+    color: var(--white);
+    background: var(--red);
+    border: 2px solid var(--black);
+    padding: 0.15rem 0.5rem;
+    transform: rotate(5deg);
+    z-index: 1;
+    box-shadow: 2px 2px 0 var(--black);
+    white-space: nowrap;
 }
 
 .hero-buttons {
@@ -794,6 +842,10 @@ a {
 
     .nav-links {
         display: none;
+    }
+
+    .nav-mobile-login {
+        display: inline-flex;
     }
 
     .hero {
@@ -2474,6 +2526,7 @@ body::after {
     align-items: flex-end;
     gap: 0.6rem;
     padding: 1.5rem 1rem 1rem;
+    min-height: 180px;
 }
 
 .weekly-bar-wrapper {
@@ -2514,6 +2567,56 @@ body::after {
     letter-spacing: 2px;
     color: #999;
     border-top: 2px solid rgba(0, 0, 0, 0.08);
+}
+
+/* ---------- MOBILE BOTTOM NAVIGATION ---------- */
+.mobile-bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 900;
+    height: 60px;
+    background: var(--white);
+    border-top: 3px solid var(--black);
+    box-shadow: 0 -3px 0 rgba(0, 0, 0, 0.1);
+    align-items: stretch;
+}
+
+.mobile-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15rem;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.mobile-nav-item:last-child {
+    border-right: none;
+}
+
+.mobile-nav-item.active {
+    background: var(--yellow);
+}
+
+.mobile-nav-icon {
+    font-size: 1.2rem;
+}
+
+.mobile-nav-label {
+    font-family: var(--font-hero);
+    font-size: 0.45rem;
+    letter-spacing: 1px;
+    color: var(--black);
+}
+
+.mobile-nav-item.active .mobile-nav-label {
+    font-weight: bold;
 }
 
 /* ---------- DASHBOARD RESPONSIVE ---------- */
@@ -2559,6 +2662,11 @@ body::after {
         padding: 0.8rem;
     }
 
+    .dash-main {
+        margin-left: 0;
+        padding-bottom: 70px;
+    }
+
     .dash-med-alert {
         margin: 0.8rem;
         flex-direction: column;
@@ -2567,6 +2675,14 @@ body::after {
 
     .hydration-percent {
         font-size: 3rem;
+    }
+
+    .weekly-flow {
+        min-height: 220px;
+    }
+
+    .mobile-bottom-nav {
+        display: flex;
     }
 }
 

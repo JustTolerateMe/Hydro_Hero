@@ -51,6 +51,9 @@ export default function Home() {
                 <a href="#cta" className="nav-cta">
                     DOWNLOAD NOW!
                 </a>
+                <a href="/auth" className="nav-mobile-login">
+                    LOGIN
+                </a>
             </nav>
 
             {/* ========== HERO ========== */}
@@ -83,12 +86,18 @@ export default function Home() {
                     </div>
                     <p className="hero-subtitle">Safe Hydration, Smarter Medication</p>
                     <div className="hero-buttons">
-                        <a href="#" className="btn btn-dark">
-                            <span className="btn-icon">🍎</span> GET APP STORE
-                        </a>
-                        <a href="#" className="btn btn-white">
-                            <span className="btn-icon">▶</span> GET PLAY STORE
-                        </a>
+                        <div className="store-btn-wrap">
+                            <a href="#" className="btn btn-dark store-btn-disabled" onClick={(e) => e.preventDefault()}>
+                                <span className="btn-icon">🍎</span> APP STORE
+                            </a>
+                            <span className="coming-soon-tag">COMING SOON</span>
+                        </div>
+                        <div className="store-btn-wrap">
+                            <a href="#" className="btn btn-white store-btn-disabled" onClick={(e) => e.preventDefault()}>
+                                <span className="btn-icon">▶</span> PLAY STORE
+                            </a>
+                            <span className="coming-soon-tag">COMING SOON</span>
+                        </div>
                     </div>
                 </div>
                 <div className="halftone-overlay"></div>

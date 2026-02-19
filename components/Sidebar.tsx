@@ -15,62 +15,103 @@ export default function Sidebar({ user, profile }: SidebarProps) {
     const pathname = usePathname();
 
     return (
-        <aside className="dash-sidebar">
-            <div className="dash-sidebar-logo">
-                HYDRO<br />HERO
-            </div>
+        <>
+            <aside className="dash-sidebar">
+                <div className="dash-sidebar-logo">
+                    HYDRO<br />HERO
+                </div>
 
-            <nav className="dash-sidebar-nav">
+                <nav className="dash-sidebar-nav">
+                    <div
+                        className={`dash-nav-item ${pathname === '/dashboard' ? 'active' : ''}`}
+                        onClick={() => router.push('/dashboard')}
+                    >
+                        <span className="dash-nav-icon">&#x2B1A;</span>
+                        <span className="dash-nav-label">BASE CAMP</span>
+                    </div>
+                    <div
+                        className={`dash-nav-item ${pathname === '/dashboard/meds' ? 'active' : ''}`}
+                        onClick={() => router.push('/dashboard/meds')}
+                    >
+                        <span className="dash-nav-icon">&#x1F48A;</span>
+                        <span className="dash-nav-label">MEDS LOG</span>
+                    </div>
+                    <div
+                        className={`dash-nav-item ${pathname === '/dashboard/profile' ? 'active' : ''}`}
+                        onClick={() => router.push('/dashboard/profile')}
+                    >
+                        <span className="dash-nav-icon">&#x1F9B8;</span>
+                        <span className="dash-nav-label">HERO ID</span>
+                    </div>
+                    <div
+                        className={`dash-nav-item ${pathname === '/dashboard/intel' ? 'active' : ''}`}
+                        onClick={() => router.push('/dashboard/intel')}
+                    >
+                        <span className="dash-nav-icon">&#x1F4CB;</span>
+                        <span className="dash-nav-label">INTEL</span>
+                    </div>
+                    <div
+                        className={`dash-nav-item ${pathname === '/dashboard/settings' ? 'active' : ''}`}
+                        onClick={() => router.push('/dashboard/settings')}
+                    >
+                        <span className="dash-nav-icon">&#x2699;</span>
+                        <span className="dash-nav-label">SETTINGS</span>
+                    </div>
+                </nav>
+
                 <div
-                    className={`dash-nav-item ${pathname === '/dashboard' ? 'active' : ''}`}
+                    className="dash-sidebar-user"
+                    onClick={() => router.push('/dashboard/profile')}
+                    style={{ cursor: 'pointer' }}
+                >
+                    <div className="dash-user-avatar">
+                        {profile?.username?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || "H"}
+                    </div>
+                    <div className="dash-user-info">
+                        {profile?.username || "Hero"}
+                        <span>Lvl {getLevelFromXP(profile?.xp ?? null)} Hydrator</span>
+                    </div>
+                </div>
+            </aside>
+
+            {/* Mobile Bottom Navigation - visible only on small screens */}
+            <nav className="mobile-bottom-nav">
+                <div
+                    className={`mobile-nav-item ${pathname === '/dashboard' ? 'active' : ''}`}
                     onClick={() => router.push('/dashboard')}
                 >
-                    <span className="dash-nav-icon">&#x2B1A;</span>
-                    <span className="dash-nav-label">BASE CAMP</span>
+                    <span className="mobile-nav-icon">&#x2B1A;</span>
+                    <span className="mobile-nav-label">HOME</span>
                 </div>
                 <div
-                    className={`dash-nav-item ${pathname === '/dashboard/meds' ? 'active' : ''}`}
+                    className={`mobile-nav-item ${pathname === '/dashboard/meds' ? 'active' : ''}`}
                     onClick={() => router.push('/dashboard/meds')}
                 >
-                    <span className="dash-nav-icon">&#x1F48A;</span>
-                    <span className="dash-nav-label">MEDS LOG</span>
+                    <span className="mobile-nav-icon">&#x1F48A;</span>
+                    <span className="mobile-nav-label">MEDS</span>
                 </div>
                 <div
-                    className={`dash-nav-item ${pathname === '/dashboard/profile' ? 'active' : ''}`}
+                    className={`mobile-nav-item ${pathname === '/dashboard/profile' ? 'active' : ''}`}
                     onClick={() => router.push('/dashboard/profile')}
                 >
-                    <span className="dash-nav-icon">&#x1F9B8;</span>
-                    <span className="dash-nav-label">HERO ID</span>
+                    <span className="mobile-nav-icon">&#x1F9B8;</span>
+                    <span className="mobile-nav-label">HERO</span>
                 </div>
                 <div
-                    className={`dash-nav-item ${pathname === '/dashboard/intel' ? 'active' : ''}`}
+                    className={`mobile-nav-item ${pathname === '/dashboard/intel' ? 'active' : ''}`}
                     onClick={() => router.push('/dashboard/intel')}
                 >
-                    <span className="dash-nav-icon">&#x1F4CB;</span>
-                    <span className="dash-nav-label">INTEL</span>
+                    <span className="mobile-nav-icon">&#x1F4CB;</span>
+                    <span className="mobile-nav-label">INTEL</span>
                 </div>
                 <div
-                    className={`dash-nav-item ${pathname === '/dashboard/settings' ? 'active' : ''}`}
+                    className={`mobile-nav-item ${pathname === '/dashboard/settings' ? 'active' : ''}`}
                     onClick={() => router.push('/dashboard/settings')}
                 >
-                    <span className="dash-nav-icon">&#x2699;</span>
-                    <span className="dash-nav-label">SETTINGS</span>
+                    <span className="mobile-nav-icon">&#x2699;</span>
+                    <span className="mobile-nav-label">SET</span>
                 </div>
             </nav>
-
-            <div
-                className="dash-sidebar-user"
-                onClick={() => router.push('/dashboard/profile')}
-                style={{ cursor: 'pointer' }}
-            >
-                <div className="dash-user-avatar">
-                    {profile?.username?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || "H"}
-                </div>
-                <div className="dash-user-info">
-                    {profile?.username || "Hero"}
-                    <span>Lvl {getLevelFromXP(profile?.xp ?? null)} Hydrator</span>
-                </div>
-            </div>
-        </aside>
+        </>
     );
 }
