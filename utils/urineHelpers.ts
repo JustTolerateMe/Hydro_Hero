@@ -15,33 +15,36 @@ import {
 // --- CONSTANTS ---
 
 export const URINE_COLORS: UrineColorInfo[] = [
-    { scale: 1, color: "#F5F5DC", label: "Clear",       category: "optimal",  xp: 10 },
-    { scale: 2, color: "#FFF9C4", label: "Pale Straw",  category: "optimal",  xp: 10 },
-    { scale: 3, color: "#FFF176", label: "Straw",        category: "good",     xp: 5 },
-    { scale: 4, color: "#FFEE58", label: "Light Yellow", category: "good",     xp: 5 },
-    { scale: 5, color: "#FFD54F", label: "Yellow",       category: "warning",  xp: 2 },
-    { scale: 6, color: "#FFB74D", label: "Amber",        category: "warning",  xp: 2 },
-    { scale: 7, color: "#FF8A65", label: "Dark Amber",   category: "critical", xp: 2 },
-    { scale: 8, color: "#BF360C", label: "Orange",       category: "critical", xp: 2 },
+    { scale: 1, color: "#F5F5DC", label: "Clear", category: "optimal", xp: 10 },
+    { scale: 2, color: "#FFF9C4", label: "Pale Straw", category: "optimal", xp: 10 },
+    { scale: 3, color: "#FFF176", label: "Straw", category: "good", xp: 5 },
+    { scale: 4, color: "#FFEE58", label: "Light Yellow", category: "good", xp: 5 },
+    { scale: 5, color: "#FFD54F", label: "Yellow", category: "warning", xp: 2 },
+    { scale: 6, color: "#FFB74D", label: "Amber", category: "warning", xp: 2 },
+    { scale: 7, color: "#FF8A65", label: "Dark Amber", category: "critical", xp: 2 },
+    { scale: 8, color: "#BF360C", label: "Orange", category: "critical", xp: 2 },
 ];
 
 export const URINE_CATEGORIES: UrineCategoryInfo[] = [
-    { category: "optimal",  label: "OPTIMAL HYDRATION!",    badgeColor: "#4CAF50", scaleRange: "1-2" },
-    { category: "good",     label: "GOOD STATUS",           badgeColor: "#2196F3", scaleRange: "3-4" },
-    { category: "warning",  label: "DEHYDRATION ALERT!",    badgeColor: "#FF9800", scaleRange: "5-6" },
+    { category: "optimal", label: "OPTIMAL HYDRATION!", badgeColor: "#4CAF50", scaleRange: "1-2" },
+    { category: "good", label: "GOOD STATUS", badgeColor: "#2196F3", scaleRange: "3-4" },
+    { category: "warning", label: "DEHYDRATION ALERT!", badgeColor: "#FF9800", scaleRange: "5-6" },
     { category: "critical", label: "CRITICAL - DRINK NOW!", badgeColor: "#E53935", scaleRange: "7-8" },
 ];
 
 export const ACHIEVEMENT_DEFINITIONS: UrineAchievementDef[] = [
-    { key: "first_log",          name: "FIRST DROP",          description: "Log your first urine color",           icon: "\u{1F4A7}", tier: "bronze" },
-    { key: "hydration_streak_3", name: "TRIPLE STREAM",       description: "3 optimal logs in a row",              icon: "\u{1F4AA}", tier: "bronze" },
-    { key: "golden_flow",        name: "GOLDEN FLOW",         description: "7 optimal logs in a row",              icon: "\u{1F31F}", tier: "gold" },
-    { key: "rehydration_master", name: "REHYDRATION MASTER",  description: "Go from amber to clear in 2 hours",    icon: "\u26A1",    tier: "gold" },
-    { key: "consistency_king",   name: "CONSISTENCY KING",    description: "Log every day for 7 straight days",     icon: "\u{1F451}", tier: "silver" },
-    { key: "early_bird",         name: "EARLY BIRD",          description: "Log before 8am, 5 times",              icon: "\u{1F305}", tier: "bronze" },
-    { key: "week_warrior",       name: "WEEK WARRIOR",        description: "7 days with 6+ logs each",             icon: "\u{1F6E1}", tier: "gold" },
-    { key: "color_rainbow",      name: "FULL SPECTRUM",       description: "Log all 8 colors at least once",        icon: "\u{1F308}", tier: "silver" },
-    { key: "night_owl",          name: "NIGHT OWL",           description: "Log after 10pm, 5 times",              icon: "\u{1F319}", tier: "bronze" },
+    { key: "first_log", name: "FIRST DROP", description: "Log your first urine color", icon: "\u{1F4A7}", tier: "bronze" },
+    { key: "hydration_streak_3", name: "TRIPLE STREAM", description: "3 optimal logs in a row", icon: "\u{1F4AA}", tier: "bronze" },
+    { key: "golden_flow", name: "GOLDEN FLOW", description: "7 optimal logs in a row", icon: "\u{1F31F}", tier: "gold" },
+    { key: "rehydration_master", name: "REHYDRATION MASTER", description: "Go from amber to clear in 2 hours", icon: "\u26A1", tier: "gold" },
+    { key: "consistency_king", name: "CONSISTENCY KING", description: "Log every day for 7 straight days", icon: "\u{1F451}", tier: "silver" },
+    { key: "early_bird", name: "EARLY BIRD", description: "Log before 8am, 5 times", icon: "\u{1F305}", tier: "bronze" },
+    { key: "week_warrior", name: "WEEK WARRIOR", description: "7 days with 6+ logs each", icon: "\u{1F6E1}", tier: "gold" },
+    { key: "color_rainbow", name: "FULL SPECTRUM", description: "Log all 8 colors at least once", icon: "\u{1F308}", tier: "silver" },
+    { key: "night_owl", name: "NIGHT OWL", description: "Log after 10pm, 5 times", icon: "\u{1F319}", tier: "bronze" },
+    // Hydration achievements
+    { key: "hydro_goal", name: "FULL TANK", description: "Reach your daily hydration goal", icon: "\u{1F680}", tier: "bronze" },
+    { key: "hydro_streak_3", name: "CONSISTENT FLOW", description: "Hit your daily goal for 3 straight days", icon: "\u{1F30A}", tier: "silver" },
 ];
 
 // --- PURE FUNCTIONS ---
@@ -328,6 +331,32 @@ export function checkAchievements(
     if (!unlocked.has("night_owl")) {
         const nightLogs = allLogs.filter(l => new Date(l.created_at).getHours() >= 22);
         if (nightLogs.length >= 5) newKeys.push("night_owl");
+    }
+
+    return newKeys;
+}
+
+export function checkHydrationAchievements(
+    dailyTotal: number,
+    goal: number,
+    weeklyLogs: { date: string; amount: number }[],
+    existing: UrineAchievement[]
+): UrineAchievementKey[] {
+    const unlocked = new Set(existing.map(a => a.achievement_key));
+    const newKeys: UrineAchievementKey[] = [];
+
+    // FULL TANK: Reach daily goal
+    if (!unlocked.has("hydro_goal") && dailyTotal >= goal) {
+        newKeys.push("hydro_goal");
+    }
+
+    // CONSISTENT FLOW: Reach daily goal for 3 straight days
+    if (!unlocked.has("hydro_streak_3")) {
+        // We look at the last 3 days (including today)
+        const lastThreeDays = weeklyLogs.slice(-3);
+        if (lastThreeDays.length === 3 && lastThreeDays.every(d => d.amount >= goal)) {
+            newKeys.push("hydro_streak_3");
+        }
     }
 
     return newKeys;

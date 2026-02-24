@@ -22,14 +22,22 @@ interface UrineLoggerProps {
     onLog: (xpGained: number) => void;
     medications: Medication[];
     dailyHydration: number;
+    externalAchievements: UrineAchievement[];
+    onAchievementUnlocked: (ach: UrineAchievement) => void;
 }
 
-export default function UrineLogger({ userId, onLog, medications, dailyHydration }: UrineLoggerProps) {
+export default function UrineLogger({
+    userId,
+    onLog,
+    medications,
+    dailyHydration,
+    externalAchievements,
+    onAchievementUnlocked
+}: UrineLoggerProps) {
     const [selectedColor, setSelectedColor] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
     const [todayLogs, setTodayLogs] = useState<UrineLog[]>([]);
     const [weeklyLogs, setWeeklyLogs] = useState<UrineLog[]>([]);
-    const [achievements, setAchievements] = useState<UrineAchievement[]>([]);
     const [showDetail, setShowDetail] = useState(false);
     const [feedback, setFeedback] = useState<UrineSmartFeedback | null>(null);
     const [alerts, setAlerts] = useState<UrineHealthAlert[]>([]);
@@ -47,7 +55,7 @@ export default function UrineLogger({ userId, onLog, medications, dailyHydration
             const sevenDaysAgo = new Date();
             sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
 
-            const [todayRes, weekRes, achieveRes] = await Promise.all([
+            const [todayRes, weekRes] = await Promise.all([
                 supabase
                     .from("urine_logs")
                     .select("*")
@@ -61,15 +69,10 @@ export default function UrineLogger({ userId, onLog, medications, dailyHydration
                     .eq("user_id", userId)
                     .gte("created_at", sevenDaysAgo.toISOString())
                     .order("created_at", { ascending: true }),
-                supabase
-                    .from("urine_achievements")
-                    .select("*")
-                    .eq("user_id", userId),
             ]);
 
             if (todayRes.data) setTodayLogs(todayRes.data as UrineLog[]);
             if (weekRes.data) setWeeklyLogs(weekRes.data as UrineLog[]);
-            if (achieveRes.data) setAchievements(achieveRes.data as UrineAchievement[]);
         };
 
         fetchData();
@@ -115,28 +118,55 @@ export default function UrineLogger({ userId, onLog, medications, dailyHydration
             setTimeout(() => setFeedback(null), 4000);
 
             // Check achievements
-            const newKeys = checkAchievements(updatedToday, updatedWeekly, achievements);
-            for (const key of newKeys) {
-                const { data: achData } = await supabase
-                    .from("urine_achievements")
-                    .insert({ user_id: userId, achievement_key: key })
-                    .select()
-                    .single();
+            console.log("DB returned data for urine log. Color scale:", scale);
+            const newKeys = checkAchievements(updatedToday, updatedWeekly, externalAchievements);
+            console.log("Current achievements in state:", externalAchievements.map(a => a.achievement_key));
+            console.log("New achievement keys detected:", newKeys);
 
-                if (achData) {
-                    const achRecord = achData as UrineAchievement;
-                    setAchievements(prev => [...prev, achRecord]);
+            if (newKeys.length > 0) {
+                const achievementPromises = newKeys.map(async (key) => {
+                    console.log(`Attempting to unlock/insert badge: ${key}`);
+                    const { data: achData, error: achError } = await supabase
+                        .from("urine_achievements")
+                        .insert({ user_id: userId, achievement_key: key })
+                        .select()
+                        .single();
 
-                    const def = ACHIEVEMENT_DEFINITIONS.find(d => d.key === key);
-                    if (def) {
-                        onLog(getAchievementXPBonus(def.tier));
-                        setNewAchievement(def);
-                        setTimeout(() => setNewAchievement(null), 3000);
+                    if (achError) {
+                        console.error(`ERROR: Failed to unlock achievement ${key}:`, achError);
+                        // If it's a conflict, it means they already have it but state was out of sync
+                        if (achError.code === "23505") {
+                            console.warn("User already has this achievement in DB.");
+                        }
+                        return null;
                     }
-                }
+
+                    if (achData) {
+                        console.log(`SUCCESS: Badge ${key} saved to database.`);
+                        const achRecord = achData as UrineAchievement;
+                        const def = ACHIEVEMENT_DEFINITIONS.find(d => d.key === key);
+                        if (def) {
+                            onLog(getAchievementXPBonus(def.tier));
+                            setNewAchievement(def);
+                            console.log(`UI: Toast set for ${def.name}`);
+                            setTimeout(() => setNewAchievement(null), 3000);
+                        }
+                        return achRecord;
+                    }
+                    return null;
+                });
+
+                const results = await Promise.all(achievementPromises);
+                const successfulAch = results.filter((r): r is UrineAchievement => r !== null);
+                successfulAch.forEach(ach => onAchievementUnlocked(ach));
+            } else {
+                console.log("No new achievements to unlock at this time.");
             }
 
             setTimeout(() => setSelectedColor(null), 2000);
+        } else if (error) {
+            console.error("CRITICAL: Failed to log urine to database:", error);
+            alert("Database Error: Could not save your log. Please check your connection.");
         }
         setLoading(false);
     };
@@ -217,24 +247,12 @@ export default function UrineLogger({ userId, onLog, medications, dailyHydration
                 </div>
             </div>
 
-            {/* Achievement toast */}
-            {newAchievement && (
-                <div className="urine-toast">
-                    <div className="urine-toast-title">
-                        {newAchievement.icon} ACHIEVEMENT UNLOCKED!
-                    </div>
-                    <div className="urine-toast-desc">
-                        {newAchievement.name} &mdash; {newAchievement.description}
-                    </div>
-                </div>
-            )}
-
             {/* Detail modal */}
             {showDetail && (
                 <UrineDetailModal
                     todayLogs={todayLogs}
                     weeklyLogs={weeklyLogs}
-                    achievements={achievements}
+                    achievements={externalAchievements}
                     medications={medications}
                     dailyHydration={dailyHydration}
                     alerts={alerts}

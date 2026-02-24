@@ -2117,6 +2117,7 @@ body::after {
         opacity: 0;
         transform: scale(0.95) translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: scale(1) translateY(0);
@@ -2128,9 +2129,11 @@ body::after {
         transform: scale(0.5);
         opacity: 0;
     }
+
     70% {
         transform: scale(1.1);
     }
+
     100% {
         transform: scale(1);
         opacity: 1;
@@ -2307,7 +2310,7 @@ body::after {
 
 .hydration-actions {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     border-top: var(--border);
 }
 
@@ -2327,12 +2330,20 @@ body::after {
     transition: background 0.15s;
 }
 
-.hydration-add-btn:first-child {
+.hydration-add-btn:not(:last-child) {
     border-right: var(--border);
 }
 
 .hydration-add-btn:hover {
     background: #1976D2;
+}
+
+.hydration-add-btn.subtract {
+    background: #FF5252;
+}
+
+.hydration-add-btn.subtract:hover {
+    background: #D32F2F;
 }
 
 .hydration-add-btn .add-icon {
@@ -4303,6 +4314,7 @@ body::after {
         opacity: 0;
         transform: translateY(-8px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -4353,4 +4365,45 @@ body::after {
         font-size: 0.7rem;
         letter-spacing: 1px;
     }
+}
+
+/* ---------- URINE LOGGING TOASTS ---------- */
+.urine-toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--yellow);
+    border: 4px solid var(--black);
+    box-shadow: 8px 8px 0 var(--black);
+    padding: 1.2rem;
+    z-index: 10000;
+    width: 320px;
+    animation: toast-slide-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes toast-slide-in {
+    from {
+        transform: translateX(120%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+.urine-toast-title {
+    font-family: var(--font-hero);
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.urine-toast-desc {
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    line-height: 1.4;
+    font-weight: 700;
 }

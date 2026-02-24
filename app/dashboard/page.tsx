@@ -6,8 +6,9 @@ import Sidebar from "@/components/Sidebar";
 import UrineLogger from "@/components/UrineLogger";
 import { useAuth } from "@/hooks/useAuth";
 import { LoadingScreen } from "@/components/Shared";
-import { Medication, WeeklyData } from "@/types";
+import { Medication, WeeklyData, UrineAchievement, UrineAchievementDef } from "@/types";
 import { getLevelFromXP } from "@/utils/helpers";
+import { checkHydrationAchievements, ACHIEVEMENT_DEFINITIONS, getAchievementXPBonus } from "@/utils/urineHelpers";
 
 export default function Dashboard() {
     const { user, profile, loading: authLoading, setProfile } = useAuth();
@@ -23,9 +24,13 @@ export default function Dashboard() {
     // Chart Data
     const [weeklyData, setWeeklyData] = useState<WeeklyData>([]);
 
+    // Achievement State
+    const [achievements, setAchievements] = useState<UrineAchievement[]>([]);
+    const [newAchievement, setNewAchievement] = useState<UrineAchievementDef | null>(null);
+
     // Derived State
     const allMedsTaken = medications.length > 0 && medications.every(m => m.taken);
-    const kidneyMood = dailyHydration > 1500 && (medications.length === 0 || allMedsTaken) ? "HAPPY" : "THIRSTY";
+    const kidneyMood = dailyHydration > 1500 ? "HAPPY" : "THIRSTY";
     const hydrationPercent = Math.round((dailyHydration / hydrationGoal) * 100);
 
     // Streak State
@@ -41,7 +46,7 @@ export default function Dashboard() {
             sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
 
             // Parallel Fetching
-            const [hydroRes, weekRes, medsRes, medLogsRes, streakRes] = await Promise.all([
+            const [hydroRes, weekRes, medsRes, medLogsRes, streakRes, achieveRes] = await Promise.all([
                 supabase
                     .from("hydration_logs")
                     .select("amount_ml")
@@ -62,7 +67,11 @@ export default function Dashboard() {
                     .select("medication_id")
                     .eq("user_id", user.id)
                     .eq("taken_at_date", today),
-                supabase.rpc("get_current_streak", { user_uuid: user.id })
+                supabase.rpc("get_current_streak", { user_uuid: user.id }),
+                supabase
+                    .from("urine_achievements")
+                    .select("*")
+                    .eq("user_id", user.id)
             ]);
 
             // Process Hydration
@@ -93,17 +102,28 @@ export default function Dashboard() {
             medsWithStatus.sort((a: any, b: any) => a.schedule_time.localeCompare(b.schedule_time));
             setMedications(medsWithStatus);
 
+            // Process Achievements
+            if (achieveRes.data) setAchievements(achieveRes.data as UrineAchievement[]);
+
             setDataLoading(false);
         };
 
         fetchDashboardData();
     }, [user, authLoading]);
 
+    // Achievement Utility for Child Components
+    const onAchievementUnlocked = (newAch: UrineAchievement) => {
+        setAchievements(prev => {
+            if (prev.some(a => a.achievement_key === newAch.achievement_key)) return prev;
+            return [...prev, newAch];
+        });
+    };
+
     // XP Logic
     const awardXP = async (amount: number) => {
         if (!user || !profile) return;
 
-        const newXP = (profile.xp || 0) + amount;
+        const newXP = Math.max(0, (profile.xp || 0) + amount);
         setProfile({ ...profile, xp: newXP });
 
         await supabase
@@ -113,14 +133,51 @@ export default function Dashboard() {
     };
 
     const addWater = async (amount: number) => {
-        setDailyHydration(prev => prev + amount);
+        const nextHydration = Math.max(0, dailyHydration + amount);
+        setDailyHydration(nextHydration);
+
         if (!user) return;
         await supabase.from("hydration_logs").insert({
             user_id: user.id,
             amount_ml: amount
         });
 
-        awardXP(10);
+        awardXP(amount > 0 ? 10 : -10);
+
+        // Check for Hydration Achievements
+        const newKeys = checkHydrationAchievements(nextHydration, hydrationGoal, weeklyData, achievements);
+        if (newKeys.length > 0) {
+            const achievementPromises = newKeys.map(async (key) => {
+                const { data: achData, error: achError } = await supabase
+                    .from("urine_achievements")
+                    .insert({ user_id: user.id, achievement_key: key })
+                    .select()
+                    .single();
+
+                if (achError) {
+                    console.error(`Failed to unlock hydration achievement ${key}:`, achError);
+                    return null;
+                }
+
+                if (achData) {
+                    const achRecord = achData as UrineAchievement;
+                    const def = ACHIEVEMENT_DEFINITIONS.find(d => d.key === key);
+                    if (def) {
+                        awardXP(getAchievementXPBonus(def.tier));
+                        setNewAchievement(def);
+                        setTimeout(() => setNewAchievement(null), 3000);
+                    }
+                    return achRecord;
+                }
+                return null;
+            });
+
+            const results = await Promise.all(achievementPromises);
+            const successfulAch = results.filter((r): r is UrineAchievement => r !== null);
+            if (successfulAch.length > 0) {
+                setAchievements(prev => [...prev, ...successfulAch]);
+            }
+        }
     };
 
     const takeMedication = async (medId: number) => {
@@ -217,6 +274,9 @@ export default function Dashboard() {
                                 <div className="hydration-moon">&#x1F319;</div>
                             </div>
                             <div className="hydration-actions">
+                                <button className="hydration-add-btn subtract" onClick={() => addWater(-250)}>
+                                    <span className="add-icon">&#x274C;</span> -250ml
+                                </button>
                                 <button className="hydration-add-btn" onClick={() => addWater(250)}>
                                     <span className="add-icon">&#x1F4A7;</span> +250ml
                                 </button>
@@ -295,7 +355,16 @@ export default function Dashboard() {
                             </div>
 
                             {/* URINE LOGGER */}
-                            {user && <UrineLogger userId={user.id} onLog={awardXP} medications={medications} dailyHydration={dailyHydration} />}
+                            {user && (
+                                <UrineLogger
+                                    userId={user.id}
+                                    onLog={awardXP}
+                                    medications={medications}
+                                    dailyHydration={dailyHydration}
+                                    externalAchievements={achievements}
+                                    onAchievementUnlocked={onAchievementUnlocked}
+                                />
+                            )}
                         </div>
 
                         {/* WEEKLY FLOW */}
@@ -323,6 +392,18 @@ export default function Dashboard() {
                     &#x1F512; DATA ENCRYPTED SECURELY. CONSULT YOUR GP BEFORE CHANGING DOSAGE.
                 </div>
             </div>
+
+            {/* Achievement toast */}
+            {newAchievement && (
+                <div className="urine-toast">
+                    <div className="urine-toast-title">
+                        {newAchievement.icon} ACHIEVEMENT UNLOCKED!
+                    </div>
+                    <div className="urine-toast-desc">
+                        {newAchievement.name} &mdash; {newAchievement.description}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

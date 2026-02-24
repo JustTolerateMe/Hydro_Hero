@@ -81,7 +81,9 @@ export type UrineAchievementKey =
     | "early_bird"
     | "week_warrior"
     | "color_rainbow"
-    | "night_owl";
+    | "night_owl"
+    | "hydro_goal"
+    | "hydro_streak_3";
 
 export type UrineAchievement = {
     id: number;
