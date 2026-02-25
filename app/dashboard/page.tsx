@@ -235,7 +235,7 @@ export default function Dashboard() {
                     </div>
                 </div>
 
-                {/* MEDICATION ALERT */}
+                {/* MEDICATION ALERT (Commented out)
                 {showMissionAlert && nextMed && (
                     <div className="dash-med-alert">
                         <div className="dash-med-alert-text">
@@ -249,6 +249,7 @@ export default function Dashboard() {
                         </button>
                     </div>
                 )}
+                */}
 
                 {/* CONTENT GRID */}
                 <div className="dash-content">
