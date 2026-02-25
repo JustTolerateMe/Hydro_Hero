@@ -15,21 +15,21 @@ import {
 // --- CONSTANTS ---
 
 export const URINE_COLORS: UrineColorInfo[] = [
-    { scale: 1, color: "#F5F5DC", label: "Clear", category: "optimal", xp: 10 },
-    { scale: 2, color: "#FFF9C4", label: "Pale Straw", category: "optimal", xp: 10 },
-    { scale: 3, color: "#FFF176", label: "Straw", category: "good", xp: 5 },
-    { scale: 4, color: "#FFEE58", label: "Light Yellow", category: "good", xp: 5 },
-    { scale: 5, color: "#FFD54F", label: "Yellow", category: "warning", xp: 2 },
-    { scale: 6, color: "#FFB74D", label: "Amber", category: "warning", xp: 2 },
-    { scale: 7, color: "#FF8A65", label: "Dark Amber", category: "critical", xp: 2 },
-    { scale: 8, color: "#BF360C", label: "Orange", category: "critical", xp: 2 },
+    { scale: 1, color: "#FFFDD8", label: "Clear", category: "optimal", xp: 10 },
+    { scale: 2, color: "#FFFBA8", label: "Pale Straw", category: "optimal", xp: 10 },
+    { scale: 3, color: "#FCE974", label: "Straw", category: "good", xp: 5 },
+    { scale: 4, color: "#FFCE79", label: "Light Yellow", category: "good", xp: 5 },
+    { scale: 5, color: "#FFBA00", label: "Yellow", category: "warning", xp: 2 },
+    { scale: 6, color: "#EAC853", label: "Amber", category: "warning", xp: 2 },
+    { scale: 7, color: "#E1C161", label: "Dark Amber", category: "critical", xp: 2 },
+    { scale: 8, color: "#898253", label: "Tea Colored", category: "critical", xp: 2 },
 ];
 
 export const URINE_CATEGORIES: UrineCategoryInfo[] = [
     { category: "optimal", label: "OPTIMAL HYDRATION!", badgeColor: "#4CAF50", scaleRange: "1-2" },
-    { category: "good", label: "GOOD STATUS", badgeColor: "#2196F3", scaleRange: "3-4" },
-    { category: "warning", label: "DEHYDRATION ALERT!", badgeColor: "#FF9800", scaleRange: "5-6" },
-    { category: "critical", label: "CRITICAL - DRINK NOW!", badgeColor: "#E53935", scaleRange: "7-8" },
+    { category: "good", label: "MINIMAL DEHYDRATION", badgeColor: "#2196F3", scaleRange: "3-4" },
+    { category: "warning", label: "SIGNIFICANT DEHYDRATION", badgeColor: "#FF9800", scaleRange: "5-6" },
+    { category: "critical", label: "SEVERE DEHYDRATION", badgeColor: "#E53935", scaleRange: "7-8" },
 ];
 
 export const ACHIEVEMENT_DEFINITIONS: UrineAchievementDef[] = [

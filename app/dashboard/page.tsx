@@ -274,8 +274,8 @@ export default function Dashboard() {
                                 <div className="hydration-moon">&#x1F319;</div>
                             </div>
                             <div className="hydration-actions">
-                                <button className="hydration-add-btn subtract" onClick={() => addWater(-250)}>
-                                    <span className="add-icon">&#x274C;</span> -250ml
+                                <button className="hydration-add-btn subtract" onClick={() => addWater(-100)}>
+                                    <span className="add-icon">&#x274C;</span> -100ml
                                 </button>
                                 <button className="hydration-add-btn" onClick={() => addWater(250)}>
                                     <span className="add-icon">&#x1F4A7;</span> +250ml
