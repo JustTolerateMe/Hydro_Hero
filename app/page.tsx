@@ -234,7 +234,7 @@ export default function Home() {
                 </h2>
                 <div className="cta-box">
                     <p>
-                        Join <strong>50,000+</strong> others who stopped kidney-ing around.
+                        Join others who stopped kidney-ing around.
                     </p>
                     <form
                         className="cta-form"
@@ -255,7 +255,7 @@ export default function Home() {
                     </form>
                 </div>
                 <p className="cta-disclaimer">
-                    © 2024 KIDNEY PAL INC. NO KIDNEYS HARMED (JUST KIDDING).
+                    &copy; 2026 STOPKIDNEYINGAROUND INC.
                 </p>
                 <div className="cta-links">
                     <a href="#">PRIVACY</a>
