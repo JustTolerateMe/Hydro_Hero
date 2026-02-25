@@ -59,6 +59,21 @@ export default function Sidebar({ user, profile }: SidebarProps) {
                     </div>
                 </nav>
 
+                <div className="dash-sidebar-join">
+                    <p className="join-label">JOIN THE MISSION:</p>
+                    <div className="dash-sidebar-socials">
+                        <a href="https://www.facebook.com/profile.php?id=61588141253154" target="_blank" rel="noopener noreferrer" className="social-icon-pill dash-sidebar-social-icon fb" title="Facebook">
+                            f
+                        </a>
+                        <a href="https://www.instagram.com/stopkidneyingaround?igsh=MTV3YzJzMHkwdWUyYQ==" target="_blank" rel="noopener noreferrer" className="social-icon-pill dash-sidebar-social-icon ig" title="Instagram">
+                            ig
+                        </a>
+                        <a href="https://www.tiktok.com/@stopkidneyingph?lang=en&is_from_webapp=1&sender_device=mobile&sender_web_id=7610809906288182791" target="_blank" rel="noopener noreferrer" className="social-icon-pill dash-sidebar-social-icon tk" title="TikTok">
+                            tk
+                        </a>
+                    </div>
+                </div>
+
                 <div
                     className="dash-sidebar-user"
                     onClick={() => router.push('/dashboard/profile')}

@@ -1246,6 +1246,95 @@ body::after {
     gap: 0.6rem;
 }
 
+/* Sidebar "Join the Mission" */
+.dash-sidebar-join {
+    padding: 0.8rem;
+    border-top: var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.join-label {
+    font-family: var(--font-hero);
+    font-size: 0.55rem;
+    letter-spacing: 1px;
+    color: var(--black);
+    margin: 0;
+}
+
+.dash-sidebar-socials {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+/* Base Social Icon Style */
+.social-icon-pill {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-hero);
+    font-size: 0.75rem;
+    text-transform: lowercase;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 2px 2px 0 var(--black);
+}
+
+.social-icon-pill:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 3.5px 3.5px 0 var(--black);
+}
+
+.social-icon-pill.fb {
+    background: #1877F2;
+    color: white;
+}
+
+.social-icon-pill.ig {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    color: white;
+}
+
+.social-icon-pill.tk {
+    background: #000000;
+    color: white;
+}
+
+/* Sidebar specific overrides */
+.dash-sidebar-social-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 0.7rem;
+}
+
+/* Footer specific overrides */
+.footer-social .social-icon-pill {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+    box-shadow: 3px 3px 0 var(--black);
+}
+
+.footer-social .social-icon-pill:hover {
+    box-shadow: 4.5px 4.5px 0 var(--black);
+}
+
+.dash-sidebar-user {
+    border-top: var(--border);
+    padding: 0.6rem 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
 .dash-user-avatar {
     width: 36px;
     height: 36px;

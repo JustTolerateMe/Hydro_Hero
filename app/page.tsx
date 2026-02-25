@@ -269,14 +269,14 @@ export default function Home() {
                 <div className="footer-inner">
                     <a href="#">ABOUT MORE</a>
                     <div className="footer-social">
-                        <a href="#" aria-label="Twitter">
-                            𝕏
+                        <a href="https://www.facebook.com/profile.php?id=61588141253154" target="_blank" rel="noopener noreferrer" className="social-icon-pill fb" aria-label="Facebook">
+                            f
                         </a>
-                        <a href="#" aria-label="Instagram">
-                            📷
+                        <a href="https://www.instagram.com/stopkidneyingaround?igsh=MTV3YzJzMHkwdWUyYQ==" target="_blank" rel="noopener noreferrer" className="social-icon-pill ig" aria-label="Instagram">
+                            ig
                         </a>
-                        <a href="#" aria-label="TikTok">
-                            🎵
+                        <a href="https://www.tiktok.com/@stopkidneyingph?lang=en&is_from_webapp=1&sender_device=mobile&sender_web_id=7610809906288182791" target="_blank" rel="noopener noreferrer" className="social-icon-pill tk" aria-label="TikTok">
+                            tk
                         </a>
                     </div>
                     <span className="footer-handle">@KIDNEYPAL</span>
