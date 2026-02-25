@@ -3,14 +3,14 @@
 import { URINE_COLORS, URINE_CATEGORIES } from "@/utils/urineHelpers";
 
 const CLINICAL_DESCRIPTIONS: Record<number, string> = {
-    1: "Nearly transparent. Excellent hydration - your kidneys are working efficiently.",
-    2: "Very light color. Well-hydrated, ideal range for most people.",
-    3: "Light straw color. Good hydration status, keep maintaining.",
-    4: "Slightly deeper yellow. Adequate but consider drinking a bit more.",
-    5: "Noticeable yellow. Your body is signaling it needs more fluids.",
-    6: "Amber tint. Moderate dehydration - drink water soon.",
-    7: "Dark amber. Significant dehydration - drink water immediately.",
-    8: "Dark orange/brown. Severe dehydration or possible medical issue. Hydrate and consult a doctor if persistent.",
+    1: "Optimal hydration. Your urine is nearly clear, indicating an efficient filtration system.",
+    2: "Well hydrated. This light straw color is the ideal target for daily health and performance.",
+    3: "Hydrated. A standard healthy color, but keep sipping water to stay in the optimal range.",
+    4: "Mild dehydration. Your body is starting to conserve water. Drink a glass of water now.",
+    5: "Dehydrated. Noticeable lack of fluids. Increase your intake to avoid fatigue or headaches.",
+    6: "Significant dehydration. Your kidneys are working hard to preserve fluid. Rehydrate immediately.",
+    7: "Severe dehydration. Very low fluid levels detected. Drink at least 500ml of water right away.",
+    8: "Critical dehydration / Tea colored. Your body is in a water-saving crisis. Hydrate now and monitor closely.",
 };
 
 export default function UrineColorCompare() {

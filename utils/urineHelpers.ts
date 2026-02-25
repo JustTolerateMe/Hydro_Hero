@@ -70,19 +70,19 @@ export function getSmartFeedback(
 ): UrineSmartFeedback {
     const hour = now.getHours();
 
-    // Critical: dark urine midday
+    // Critical: Severe dehydration (7-8)
     if (scale >= 7) {
         return {
-            message: "CRITICAL ALERT! Your kidneys need water NOW! Drink 500ml immediately!",
+            message: "SEVERE DEHYDRATION! Drink at least 500ml of water immediately. Your body is in a water-saving crisis.",
             type: "warning",
             icon: "\u{1F6A8}",
         };
     }
 
-    // Warning: dehydration detected during active hours
-    if (scale >= 5 && hour >= 10 && hour <= 16) {
+    // Warning: Significant dehydration (5-6)
+    if (scale >= 5) {
         return {
-            message: `DEHYDRATION DETECTED at ${hour > 12 ? hour - 12 : hour}${hour >= 12 ? "PM" : "AM"}! Drink water to rehydrate!`,
+            message: `SIGNIFICANT DEHYDRATION DETECTED. Drink water soon to rehydrate and avoid fatigue or headaches.`,
             type: "warning",
             icon: "\u26A0\uFE0F",
         };
@@ -141,10 +141,10 @@ export function getSmartFeedback(
         };
     }
 
-    // Good status
+    // Minimal Dehydration (3-4)
     if (scale <= 4) {
         return {
-            message: "Good hydration status! Keep sipping to stay in the green zone.",
+            message: "Minimal dehydration detected. Keep sipping to return to the optimal green zone.",
             type: "encouragement",
             icon: "\u2705",
         };
@@ -224,14 +224,14 @@ export function computeHealthAlerts(
         });
     }
 
-    // Consistently dark across the week
+    // Consistently dark across the week (Avg >= 5.0)
     if (weeklyLogs.length >= 10) {
         const weekAvg = weeklyLogs.reduce((sum, l) => sum + l.color_scale, 0) / weeklyLogs.length;
-        if (weekAvg >= 5.5) {
+        if (weekAvg >= 5.0) {
             alerts.push({
                 type: "dark_despite_hydration",
                 severity: "critical",
-                message: "Your weekly average shows persistent dehydration. Please increase your fluid intake and consider consulting a doctor.",
+                message: "Your weekly average shows persistent significant dehydration. Please increase your baseline fluid intake.",
             });
         }
     }

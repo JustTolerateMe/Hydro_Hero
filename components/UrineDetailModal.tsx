@@ -59,7 +59,7 @@ export default function UrineDetailModal({
             <div className="urine-modal-panel" onClick={(e) => e.stopPropagation()}>
                 {/* Header */}
                 <div className="urine-modal-header">
-                    <h3 className="dash-card-title">PEE CHART &mdash; DETAILED ANALYSIS</h3>
+                    <h3 className="dash-card-title">ARMSTRONG URINE CHART &mdash; DETAILED ANALYSIS</h3>
                     <button className="urine-modal-close" onClick={onClose}>
                         &#x2715;
                     </button>

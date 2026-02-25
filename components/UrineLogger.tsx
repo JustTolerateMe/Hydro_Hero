@@ -186,7 +186,7 @@ export default function UrineLogger({
         <>
             <div className="dash-card urine-card">
                 <div className="dash-card-header">
-                    <h3 className="dash-card-title">PEE CHART</h3>
+                    <h3 className="dash-card-title">ARMSTRONG URINE CHART</h3>
                     <button className="urine-expand-btn" onClick={() => setShowDetail(true)}>
                         DETAILS &#x25B6;
                     </button>
