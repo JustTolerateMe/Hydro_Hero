@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 
 export default function Home() {
     const heroVideoRef = useRef<HTMLVideoElement>(null);
@@ -132,6 +133,42 @@ export default function Home() {
                     <span className="marquee-dot">★</span>
                 </div>
             </div>
+
+            {/* ========== TEAM ========== */}
+            <section className="team-section">
+                <div className="team-header">
+                    <div className="hero-badge">BEHIND THE MISSION</div>
+                    <h2 className="section-title">THE OPERATIVES</h2>
+                    <p className="team-subtitle">SGD 14 &middot; Xavier University &middot; First-Year Medical Students</p>
+                </div>
+                <div className="team-grid">
+                    {[
+                        { name: "AIAH",   file: "aiah"   },
+                        { name: "ANNIE",  file: "annie"  },
+                        { name: "CATHY",  file: "cathy"  },
+                        { name: "CHIN",   file: "chin"   },
+                        { name: "EDD",    file: "edd"    },
+                        { name: "ELISE",  file: "elise"  },
+                        { name: "ELLA",   file: "ella"   },
+                        { name: "RR",     file: "rr"     },
+                        { name: "SINAL",  file: "sinal"  },
+                        { name: "THIRDY", file: "thirdy" },
+                    ].map((s) => (
+                        <div key={s.file} className="team-card">
+                            <div className="team-photo-wrap">
+                                <Image
+                                    src={`/individual/${s.file}.webp`}
+                                    alt={s.name}
+                                    fill
+                                    sizes="100px"
+                                    className="team-photo"
+                                />
+                            </div>
+                            <span className="team-name">{s.name}</span>
+                        </div>
+                    ))}
+                </div>
+            </section>
 
             {/* ========== FEATURES ========== */}
             <section id="features" className="features-section">
