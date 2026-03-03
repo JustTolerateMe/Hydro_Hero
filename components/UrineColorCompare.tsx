@@ -3,14 +3,16 @@
 import { URINE_COLORS, URINE_CATEGORIES } from "@/utils/urineHelpers";
 
 const CLINICAL_DESCRIPTIONS: Record<number, string> = {
-    1: "Optimal hydration. Your urine is nearly clear, indicating an efficient filtration system.",
-    2: "Well hydrated. This light straw color is the ideal target for daily health and performance.",
-    3: "Hydrated. A standard healthy color, but keep sipping water to stay in the optimal range.",
-    4: "Mild dehydration. Your body is starting to conserve water. Drink a glass of water now.",
-    5: "Dehydrated. Noticeable lack of fluids. Increase your intake to avoid fatigue or headaches.",
-    6: "Significant dehydration. Your kidneys are working hard to preserve fluid. Rehydrate immediately.",
-    7: "Severe dehydration. Very low fluid levels detected. Drink at least 500ml of water right away.",
-    8: "Critical dehydration / Tea colored. Your body is in a water-saving crisis. Hydrate now and monitor closely.",
+    1:  "You may be drinking too much water. Overhydration is rare but possible — a slight yellow tint is the healthier target.",
+    2:  "Perfect! Pale yellow means you're drinking enough water and your kidneys are filtering well.",
+    3:  "You're not drinking enough water. Aim for an extra glass or two in the next hour.",
+    4:  "Orange urine signals dehydration. Certain vitamins (e.g. B2) and medications can also cause this — drink up!",
+    5:  "Dark orange or brown urine may mean severe dehydration or your body isn't producing enough bile. Hydrate and monitor.",
+    6:  "Very dark brown or black urine can indicate liver disease, rhabdomyolysis, or alkaptonuria. Seek medical attention.",
+    7:  "Pink or red urine may be blood (hematuria) — a serious sign — or from beets, rhubarb, or certain medications. See a doctor if unsure.",
+    8:  "Blue or green urine results from certain dyes in food or some medications. Green urine can also indicate a UTI.",
+    9:  "Cloudy urine is often a sign of a urinary tract infection (UTI). Drink water and consult a doctor if it persists.",
+    10: "White or milky urine may indicate chyluria, a condition where lymphatic fluid mixes with urine. See a healthcare provider.",
 };
 
 export default function UrineColorCompare() {
@@ -18,7 +20,7 @@ export default function UrineColorCompare() {
         <div>
             <p className="urine-section-title">COLOR COMPARISON GUIDE</p>
             <p className="urine-section-subtitle">
-                Match your observation to the closest reference color
+                Based on the Healthline urine color guide
             </p>
 
             <div className="urine-compare-grid">

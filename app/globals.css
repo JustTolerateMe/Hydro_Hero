@@ -1565,10 +1565,10 @@ body::after {
 
 /* ---------- URINE LOGGER ENHANCED ---------- */
 
-/* Scale Grid (2 rows of 4) */
+/* Scale Grid (2 rows of 5) */
 .urine-scale-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 0.4rem;
     justify-items: center;
     margin-bottom: 0.5rem;

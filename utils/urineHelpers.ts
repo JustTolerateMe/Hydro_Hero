@@ -15,21 +15,23 @@ import {
 // --- CONSTANTS ---
 
 export const URINE_COLORS: UrineColorInfo[] = [
-    { scale: 1, color: "#FFFDD8", label: "Clear", category: "optimal", xp: 10 },
-    { scale: 2, color: "#FFFBA8", label: "Pale Straw", category: "optimal", xp: 10 },
-    { scale: 3, color: "#FCE974", label: "Straw", category: "good", xp: 5 },
-    { scale: 4, color: "#FFCE79", label: "Light Yellow", category: "good", xp: 5 },
-    { scale: 5, color: "#FFBA00", label: "Yellow", category: "warning", xp: 2 },
-    { scale: 6, color: "#EAC853", label: "Amber", category: "warning", xp: 2 },
-    { scale: 7, color: "#E1C161", label: "Dark Amber", category: "critical", xp: 2 },
-    { scale: 8, color: "#898253", label: "Tea Colored", category: "critical", xp: 2 },
+    { scale: 1,  color: "#F5F9F5", label: "Clear",             category: "good",     xp: 5  },
+    { scale: 2,  color: "#F5D98B", label: "Pale Yellow",       category: "optimal",  xp: 10 },
+    { scale: 3,  color: "#C8A42A", label: "Dark Yellow",       category: "warning",  xp: 3  },
+    { scale: 4,  color: "#CF6435", label: "Orange",            category: "warning",  xp: 2  },
+    { scale: 5,  color: "#7A3E22", label: "Dark Orange/Brown", category: "critical", xp: 2  },
+    { scale: 6,  color: "#2E1A0A", label: "Dark Brown/Black",  category: "critical", xp: 2  },
+    { scale: 7,  color: "#D4746A", label: "Pink/Red",          category: "critical", xp: 2  },
+    { scale: 8,  color: "#90C4C0", label: "Blue/Green",        category: "critical", xp: 2  },
+    { scale: 9,  color: "#DDD4A8", label: "Cloudy",            category: "critical", xp: 2  },
+    { scale: 10, color: "#EDE8DC", label: "White/Milky",       category: "critical", xp: 2  },
 ];
 
 export const URINE_CATEGORIES: UrineCategoryInfo[] = [
-    { category: "optimal", label: "OPTIMAL HYDRATION!", badgeColor: "#4CAF50", scaleRange: "1-2" },
-    { category: "good", label: "MINIMAL DEHYDRATION", badgeColor: "#2196F3", scaleRange: "3-4" },
-    { category: "warning", label: "SIGNIFICANT DEHYDRATION", badgeColor: "#FF9800", scaleRange: "5-6" },
-    { category: "critical", label: "SEVERE DEHYDRATION", badgeColor: "#E53935", scaleRange: "7-8" },
+    { category: "optimal", label: "OPTIMAL HYDRATION!",  badgeColor: "#4CAF50", scaleRange: "2"    },
+    { category: "good",    label: "WELL HYDRATED!",       badgeColor: "#2196F3", scaleRange: "1"    },
+    { category: "warning", label: "DRINK MORE WATER!",   badgeColor: "#FF9800", scaleRange: "3-4"  },
+    { category: "critical",label: "SEEK ATTENTION!",     badgeColor: "#E53935", scaleRange: "5-10" },
 ];
 
 export const ACHIEVEMENT_DEFINITIONS: UrineAchievementDef[] = [
@@ -40,7 +42,7 @@ export const ACHIEVEMENT_DEFINITIONS: UrineAchievementDef[] = [
     { key: "consistency_king", name: "CONSISTENCY KING", description: "Log every day for 7 straight days", icon: "\u{1F451}", tier: "silver" },
     { key: "early_bird", name: "EARLY BIRD", description: "Log before 8am, 5 times", icon: "\u{1F305}", tier: "bronze" },
     { key: "week_warrior", name: "WEEK WARRIOR", description: "7 days with 6+ logs each", icon: "\u{1F6E1}", tier: "gold" },
-    { key: "color_rainbow", name: "FULL SPECTRUM", description: "Log all 8 colors at least once", icon: "\u{1F308}", tier: "silver" },
+    { key: "color_rainbow", name: "FULL SPECTRUM", description: "Log all 10 colors at least once", icon: "\u{1F308}", tier: "silver" },
     { key: "night_owl", name: "NIGHT OWL", description: "Log after 10pm, 5 times", icon: "\u{1F319}", tier: "bronze" },
     // Hydration achievements
     { key: "hydro_goal", name: "FULL TANK", description: "Reach your daily hydration goal", icon: "\u{1F680}", tier: "bronze" },
@@ -55,10 +57,10 @@ export function getXPForScale(scale: UrineColorScale): number {
 }
 
 export function getUrineCategory(scale: UrineColorScale): UrineCategoryInfo {
-    if (scale <= 2) return URINE_CATEGORIES[0];
-    if (scale <= 4) return URINE_CATEGORIES[1];
-    if (scale <= 6) return URINE_CATEGORIES[2];
-    return URINE_CATEGORIES[3];
+    if (scale === 2) return URINE_CATEGORIES[0]; // optimal
+    if (scale === 1) return URINE_CATEGORIES[1]; // good
+    if (scale <= 4)  return URINE_CATEGORIES[2]; // warning
+    return URINE_CATEGORIES[3];                  // critical (5-10)
 }
 
 export function getSmartFeedback(
@@ -70,47 +72,74 @@ export function getSmartFeedback(
 ): UrineSmartFeedback {
     const hour = now.getHours();
 
-    // Critical: Severe dehydration (7-8)
-    if (scale >= 7) {
+    // Non-dehydration medical colors (7-10) — special messages
+    if (scale === 10) {
         return {
-            message: "SEVERE DEHYDRATION! Drink at least 500ml of water immediately. Your body is in a water-saving crisis.",
+            message: "White or milky urine is unusual. This may indicate chyluria — consider speaking with a healthcare provider.",
+            type: "warning",
+            icon: "\u{1F3E5}",
+        };
+    }
+    if (scale === 9) {
+        return {
+            message: "Cloudy urine may indicate a UTI. Stay hydrated and consult a doctor if it persists.",
+            type: "warning",
+            icon: "\u{1F489}",
+        };
+    }
+    if (scale === 8) {
+        return {
+            message: "Unusual color! Blue or green urine can be from food dye or medication. Green may also indicate a UTI — monitor it.",
+            type: "warning",
+            icon: "\u26A0\uFE0F",
+        };
+    }
+    if (scale === 7) {
+        return {
+            message: "Pink or red urine can be from beets or medication — but if not, this may be blood in urine. See a doctor if unsure.",
             type: "warning",
             icon: "\u{1F6A8}",
         };
     }
 
-    // Warning: Significant dehydration (5-6)
+    // Critical: Severe dehydration/medical (5-6)
     if (scale >= 5) {
         return {
-            message: `SIGNIFICANT DEHYDRATION DETECTED. Drink water soon to rehydrate and avoid fatigue or headaches.`,
+            message: "VERY DARK URINE! This may indicate severe dehydration or a medical condition. Drink water and seek medical advice.",
+            type: "warning",
+            icon: "\u{1F6A8}",
+        };
+    }
+
+    // Warning: Dehydration (3-4)
+    if (scale >= 3) {
+        // Medication note takes priority at this level
+        const medNote = getMedicationNotes(medications);
+        if (medNote) {
+            return { message: medNote, type: "med_note", icon: "\u{1F48A}" };
+        }
+        return {
+            message: scale === 3
+                ? "Not quite enough water. Aim for an extra glass or two in the next hour."
+                : "Dehydration detected! Drink water soon to avoid fatigue or headaches.",
             type: "warning",
             icon: "\u26A0\uFE0F",
         };
     }
 
-    // Streak: 3+ optimal in a row
+    // Streak: 3+ optimal (scale 2) in a row
     const recentLogs = [...todayLogs].sort((a, b) =>
         new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
     );
-    if (scale <= 2 && recentLogs.length >= 2) {
+    if (scale === 2 && recentLogs.length >= 2) {
         const lastTwo = recentLogs.slice(0, 2);
-        if (lastTwo.every(l => l.color_scale <= 2)) {
+        if (lastTwo.every(l => l.color_scale === 2)) {
             return {
                 message: "OPTIMAL STREAK! 3+ perfect readings in a row! Keep it flowing!",
                 type: "streak",
                 icon: "\u{1F525}",
             };
         }
-    }
-
-    // Medication note
-    const medNote = getMedicationNotes(medications);
-    if (medNote && scale >= 3 && scale <= 5) {
-        return {
-            message: medNote,
-            type: "med_note",
-            icon: "\u{1F48A}",
-        };
     }
 
     // Time-based reminder
@@ -127,34 +156,25 @@ export function getSmartFeedback(
         }
     }
 
-    // Optimal encouragement
-    if (scale <= 2) {
-        const messages = [
-            "PERFECT HYDRATION! Your kidneys are running at full power!",
-            "CRYSTAL CLEAR! Your filtration system is in peak condition!",
-            "OPTIMAL LEVELS! You're a hydration superhero!",
-        ];
+    // Scale 1 (Clear — overhydrated)
+    if (scale === 1) {
         return {
-            message: messages[Math.floor(Math.random() * messages.length)],
+            message: "Very clear! You may be slightly overhydrated. A pale yellow tint is the ideal target.",
             type: "encouragement",
-            icon: "\u{1F4AA}",
+            icon: "\u{1F4A7}",
         };
     }
 
-    // Minimal Dehydration (3-4)
-    if (scale <= 4) {
-        return {
-            message: "Minimal dehydration detected. Keep sipping to return to the optimal green zone.",
-            type: "encouragement",
-            icon: "\u2705",
-        };
-    }
-
-    // Warning default
+    // Scale 2 (Pale Yellow — optimal)
+    const messages = [
+        "PERFECT HYDRATION! Your kidneys are running at full power!",
+        "PALE YELLOW! That's the target — you're a hydration superhero!",
+        "OPTIMAL LEVELS! Your filtration system is in peak condition!",
+    ];
     return {
-        message: "Your body is signaling dehydration. Time to drink up!",
-        type: "warning",
-        icon: "\u{1F4A7}",
+        message: messages[Math.floor(Math.random() * messages.length)],
+        type: "encouragement",
+        icon: "\u{1F4AA}",
     };
 }
 
@@ -224,14 +244,14 @@ export function computeHealthAlerts(
         });
     }
 
-    // Consistently dark across the week (Avg >= 5.0)
+    // Consistently dark across the week (Avg >= 3.5 = in warning/critical range)
     if (weeklyLogs.length >= 10) {
         const weekAvg = weeklyLogs.reduce((sum, l) => sum + l.color_scale, 0) / weeklyLogs.length;
-        if (weekAvg >= 5.0) {
+        if (weekAvg >= 3.5) {
             alerts.push({
                 type: "dark_despite_hydration",
                 severity: "critical",
-                message: "Your weekly average shows persistent significant dehydration. Please increase your baseline fluid intake.",
+                message: "Your weekly average shows persistent dehydration. Please increase your baseline fluid intake.",
             });
         }
     }
@@ -273,10 +293,10 @@ export function checkAchievements(
         }
     }
 
-    // REHYDRATION MASTER: amber (>=6) to clear (<=2) within 2 hours
+    // REHYDRATION MASTER: orange or darker (>=4) to pale yellow (<=2) within 2 hours
     if (!unlocked.has("rehydration_master")) {
         for (let i = 0; i < allLogs.length - 1; i++) {
-            if (allLogs[i].color_scale >= 6) {
+            if (allLogs[i].color_scale >= 4) {
                 for (let j = i + 1; j < allLogs.length; j++) {
                     const timeDiff = new Date(allLogs[j].created_at).getTime() - new Date(allLogs[i].created_at).getTime();
                     if (timeDiff > 2 * 60 * 60 * 1000) break;
@@ -321,10 +341,10 @@ export function checkAchievements(
         if (fullDays.length >= 7) newKeys.push("week_warrior");
     }
 
-    // FULL SPECTRUM: all 8 colors logged
+    // FULL SPECTRUM: all 10 colors logged
     if (!unlocked.has("color_rainbow")) {
         const colorSet = new Set(allLogs.map(l => l.color_scale));
-        if (colorSet.size >= 8) newKeys.push("color_rainbow");
+        if (colorSet.size >= 10) newKeys.push("color_rainbow");
     }
 
     // NIGHT OWL: 5 logs after 10pm

@@ -42,7 +42,7 @@ export type WeeklyData = {
 
 // --- URINE LOGGER TYPES ---
 
-export type UrineColorScale = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+export type UrineColorScale = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 export type UrineVolume = "small" | "medium" | "large";
 
