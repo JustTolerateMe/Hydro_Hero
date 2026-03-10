@@ -1,13 +1,41 @@
 /**
- * Calculate daily water goal based on weight and unit.
- * Formula: weight_in_kg * 35 ml
+ * Calculate daily water goal based on new formula:
+ * Water Intake (ml/day) = 0.75 * [(35 * W) + (350 * S) + A + T]
+ * W = weight in kg
+ * S = sex (female=0, male=1)
+ * A = activity (sedentary=0, light=300, moderate=600, heavy=1000)
+ * T = temperature/climate (cool/<20C=0, moderate/20-29C=300, hot/>30C=700)
  */
-export function calculateWaterGoal(weight: number | "", weightUnit: "kg" | "lbs"): number {
+export function calculateWaterGoal(
+    weight: number | "",
+    weightUnit: "kg" | "lbs",
+    sex: "male" | "female" | null | "",
+    activityLevel: "sedentary" | "light" | "moderate" | "heavy" | "",
+    climate: "cool" | "moderate" | "hot" | ""
+): number {
     let weightKg = Number(weight) || 0;
     if (weightUnit === "lbs") {
         weightKg = weightKg * 0.453592;
     }
-    return Math.round(weightKg * 35);
+
+    const wComponent = 35 * weightKg;
+
+    const sVal = sex === "male" ? 1 : 0;
+    const sComponent = 350 * sVal;
+
+    let aComponent = 0;
+    if (activityLevel === "light") aComponent = 300;
+    if (activityLevel === "moderate") aComponent = 600;
+    if (activityLevel === "heavy") aComponent = 1000;
+
+    let tComponent = 0;
+    if (climate === "moderate") tComponent = 300;
+    if (climate === "hot") tComponent = 700;
+
+    const totalRaw = wComponent + sComponent + aComponent + tComponent;
+    const recommended = totalRaw * 0.75;
+
+    return Math.round(recommended);
 }
 
 /**

@@ -6,19 +6,21 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { LoadingScreen } from "@/components/Shared";
 import ActivityPicker from "@/components/ActivityPicker";
-import MissionPicker from "@/components/MissionPicker";
 import WeightInput from "@/components/WeightInput";
+import SexPicker from "@/components/SexPicker";
+import ClimatePicker from "@/components/ClimatePicker";
 import { calculateWaterGoal, convertToKg } from "@/utils/helpers";
 
 type OnboardingData = {
     username: string;
     weight_kg: number | "";
     weight_unit: "kg" | "lbs";
-    activity_level: "" | "sedentary" | "active" | "heroic";
-    mission: "" | "stone_smasher" | "hydration_hero" | "skin_glow";
+    sex: "male" | "female" | "";
+    climate: "cool" | "moderate" | "hot" | "";
+    activity_level: "" | "sedentary" | "light" | "moderate" | "heavy";
 };
 
-const STEPS = 4;
+const STEPS = 3;
 
 export default function OnboardingPage() {
     const router = useRouter();
@@ -31,15 +33,15 @@ export default function OnboardingPage() {
         username: "",
         weight_kg: "",
         weight_unit: "kg",
+        sex: "",
+        climate: "",
         activity_level: "",
-        mission: "",
     });
 
     const canGoNext = () => {
         switch (step) {
-            case 1: return data.username.trim().length > 0;
-            case 2: return data.weight_kg !== "" && Number(data.weight_kg) > 0 && data.activity_level !== "";
-            case 3: return data.mission !== "";
+            case 1: return data.username.trim().length > 0 && data.sex !== "";
+            case 2: return data.weight_kg !== "" && Number(data.weight_kg) > 0 && data.activity_level !== "" && data.climate !== "";
             default: return true;
         }
     };
@@ -55,7 +57,7 @@ export default function OnboardingPage() {
         setStep(s => Math.max(s - 1, 1));
     };
 
-    const waterGoal = calculateWaterGoal(data.weight_kg, data.weight_unit);
+    const waterGoal = calculateWaterGoal(data.weight_kg, data.weight_unit, data.sex, data.activity_level, data.climate);
 
     const [saveError, setSaveError] = useState("");
 
@@ -71,9 +73,10 @@ export default function OnboardingPage() {
             .update({
                 username: data.username.trim(),
                 weight_kg: weightKg,
+                sex: data.sex,
+                climate: data.climate,
                 activity_level: data.activity_level,
                 daily_water_goal_ml: waterGoal,
-                mission: data.mission,
                 onboarding_complete: true,
             })
             .eq("id", user.id);
@@ -132,7 +135,7 @@ export default function OnboardingPage() {
                             <div className="speech-silhouette">
                                 <div className="silhouette-body">?</div>
                                 <div className="speech-bubble-onboard">
-                                    <h2 className="step-headline">EVERY HERO NEEDS A CODENAME.</h2>
+                                    <h2 className="step-headline">What should we call you ?</h2>
                                     <p className="step-subtext">What shall we call you, hero?</p>
                                     <input
                                         type="text"
@@ -142,6 +145,14 @@ export default function OnboardingPage() {
                                         onChange={e => setData({ ...data, username: e.target.value })}
                                         autoFocus
                                     />
+
+                                    <div style={{ marginTop: '1.5rem' }}>
+                                        <label className="onboard-label">BIOLOGICAL SEX</label>
+                                        <SexPicker
+                                            value={data.sex}
+                                            onChange={sex => setData({ ...data, sex: sex as OnboardingData["sex"] })}
+                                        />
+                                    </div>
                                     <div className="speech-tail-onboard" />
                                 </div>
                             </div>
@@ -152,7 +163,7 @@ export default function OnboardingPage() {
                 {/* STEP 2: PHYSICS */}
                 {step === 2 && (
                     <div className="onboarding-step">
-                        <h2 className="step-headline">CALIBRATING SUIT HYDRAULICS...</h2>
+                        <h2 className="step-headline">SET YOUR HYDRATION GOAL</h2>
                         <p className="step-subtext">We need your stats to calculate the perfect hydration target.</p>
 
                         <div className="physics-inputs">
@@ -173,7 +184,13 @@ export default function OnboardingPage() {
                                 onChange={level => setData({ ...data, activity_level: level as OnboardingData["activity_level"] })}
                             />
 
-                            {data.weight_kg !== "" && data.activity_level !== "" && (
+                            <label className="onboard-label">TYPICAL CLIMATE</label>
+                            <ClimatePicker
+                                value={data.climate}
+                                onChange={climate => setData({ ...data, climate: climate as OnboardingData["climate"] })}
+                            />
+
+                            {data.weight_kg !== "" && data.activity_level !== "" && data.sex !== "" && data.climate !== "" && (
                                 <div className="water-goal-preview">
                                     Your daily water goal: <strong>{waterGoal} ml</strong>
                                 </div>
@@ -182,30 +199,21 @@ export default function OnboardingPage() {
                     </div>
                 )}
 
-                {/* STEP 3: MISSION */}
+                {/* STEP 3: LAUNCH */}
                 {step === 3 && (
-                    <div className="onboarding-step">
-                        <h2 className="step-headline">CHOOSE YOUR MISSION.</h2>
-                        <p className="step-subtext">Every hero has a purpose. What drives you?</p>
-
-                        <MissionPicker
-                            value={data.mission}
-                            onChange={m => setData({ ...data, mission: m as OnboardingData["mission"] })}
-                        />
-                    </div>
-                )}
-
-                {/* STEP 4: LAUNCH */}
-                {step === 4 && (
                     <div className="onboarding-step launch-step">
                         <div className="launch-badge">&#x1F680;</div>
-                        <h2 className="step-headline">SUIT CALIBRATED!</h2>
+                        <h2 className="step-headline">ALL SET!</h2>
                         <p className="step-subtext">You&apos;re ready to begin your mission, <strong>{data.username}</strong>.</p>
 
                         <div className="launch-summary">
                             <div className="summary-row">
                                 <span className="summary-label">CODENAME</span>
                                 <span className="summary-value">{data.username}</span>
+                            </div>
+                            <div className="summary-row">
+                                <span className="summary-label">SEX</span>
+                                <span className="summary-value">{(data.sex || '').toUpperCase()}</span>
                             </div>
                             <div className="summary-row">
                                 <span className="summary-label">WEIGHT</span>
@@ -216,12 +224,12 @@ export default function OnboardingPage() {
                                 <span className="summary-value">{(data.activity_level || '').toUpperCase()}</span>
                             </div>
                             <div className="summary-row">
-                                <span className="summary-label">WATER GOAL</span>
-                                <span className="summary-value">{waterGoal} ML / DAY</span>
+                                <span className="summary-label">CLIMATE</span>
+                                <span className="summary-value">{(data.climate || '').toUpperCase()}</span>
                             </div>
                             <div className="summary-row">
-                                <span className="summary-label">MISSION</span>
-                                <span className="summary-value">{(data.mission || '').replace('_', ' ').toUpperCase()}</span>
+                                <span className="summary-label">WATER GOAL</span>
+                                <span className="summary-value">{waterGoal} ML / DAY</span>
                             </div>
                         </div>
 
@@ -230,7 +238,7 @@ export default function OnboardingPage() {
                             onClick={handleSave}
                             disabled={saving}
                         >
-                            {saving ? "LAUNCHING..." : "SUIT UP! \u{1F680}"}
+                            {saving ? "SAVING..." : "START TRACKING \u{1F680}"}
                         </button>
 
                         {saveError && (

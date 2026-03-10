@@ -3,7 +3,9 @@ export type Profile = {
     username: string | null;
     avatar_url: string | null;
     weight_kg: number | null;
-    activity_level: "sedentary" | "active" | "heroic" | null;
+    sex: "male" | "female" | null;
+    climate: "cool" | "moderate" | "hot" | null;
+    activity_level: "sedentary" | "light" | "moderate" | "heavy" | null;
     daily_water_goal_ml: number | null;
     mission: "stone_smasher" | "hydration_hero" | "skin_glow" | null;
     onboarding_complete: boolean | null;

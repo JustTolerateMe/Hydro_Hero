@@ -347,7 +347,7 @@ export default function Dashboard() {
                                 </div>
                                 <div className="kidney-mood">
                                     <div className="kidney-mood-emoji">
-                                        {kidneyMood === 'HAPPY' ? '\u2764\uFE0F' : '\u{1F335}'}
+                                        {kidneyMood === 'HAPPY' ? '\u{1F4A7}' : '\u{1F975}'}
                                     </div>
                                     <div className="kidney-mood-label" style={kidneyMood === 'THIRSTY' ? { background: '#FF9800' } : {}}>
                                         {kidneyMood === 'HAPPY' ? 'FEELING HAPPY!' : 'NEED WATER...'}

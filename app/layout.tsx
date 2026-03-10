@@ -18,16 +18,11 @@ const comicNeue = Comic_Neue({
     display: 'swap',
 });
 
-export const viewport = {
-    themeColor: "#FFD700",
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-};
-
 export const metadata: Metadata = {
     title: "The Kidney Pill — Stop Kidney-ing Around!",
     description: "Safe Hydration, Smarter Medication",
+    viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+    themeColor: "#FFD700",
     manifest: "/manifest.json",
     appleWebApp: {
         capable: true,
@@ -45,11 +40,11 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" >
             <body className={`${bangers.variable} ${comicNeue.variable}`}>
                 {children}
                 <InstallBanner />
             </body>
-        </html>
+        </html >
     );
 }

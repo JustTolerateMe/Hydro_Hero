@@ -7,7 +7,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { LoadingScreen } from "@/components/Shared";
 import WeightInput from "@/components/WeightInput";
 import ActivityPicker from "@/components/ActivityPicker";
-import MissionPicker from "@/components/MissionPicker";
+import SexPicker from "@/components/SexPicker";
+import ClimatePicker from "@/components/ClimatePicker";
 import { calculateWaterGoal, convertToKg } from "@/utils/helpers";
 
 export default function ProfilePage() {
@@ -21,8 +22,9 @@ export default function ProfilePage() {
     const [username, setUsername] = useState("");
     const [weightKg, setWeightKg] = useState<number | "">("");
     const [weightUnit, setWeightUnit] = useState<"kg" | "lbs">("kg");
-    const [activityLevel, setActivityLevel] = useState("");
-    const [mission, setMission] = useState("");
+    const [sex, setSex] = useState<"male" | "female" | "">("");
+    const [climate, setClimate] = useState<"cool" | "moderate" | "hot" | "">("");
+    const [activityLevel, setActivityLevel] = useState<"sedentary" | "light" | "moderate" | "heavy" | "">("");
 
     // Stats
     const [totalWater, setTotalWater] = useState(0);
@@ -35,8 +37,9 @@ export default function ProfilePage() {
             if (profile) {
                 setUsername(profile.username || "");
                 setWeightKg(profile.weight_kg || "");
-                setActivityLevel(profile.activity_level || "");
-                setMission(profile.mission || "");
+                setSex(profile.sex || "");
+                setClimate(profile.climate || "");
+                setActivityLevel((profile.activity_level as any) || "");
             }
 
             // Fetch stats in parallel
@@ -59,16 +62,17 @@ export default function ProfilePage() {
         setSaved(false);
 
         const wKg = convertToKg(weightKg, weightUnit);
-        const waterGoal = calculateWaterGoal(weightKg, weightUnit);
+        const waterGoal = calculateWaterGoal(weightKg, weightUnit, sex as any, activityLevel as any, climate as any);
 
         const { error } = await supabase
             .from("profiles")
             .update({
                 username: username.trim(),
                 weight_kg: wKg,
+                sex: sex || null,
+                climate: climate || null,
                 activity_level: activityLevel || null,
                 daily_water_goal_ml: waterGoal,
-                mission: mission || null,
             })
             .eq("id", user.id);
 
@@ -77,9 +81,10 @@ export default function ProfilePage() {
                 ...prev,
                 username: username.trim(),
                 weight_kg: wKg,
-                activity_level: (activityLevel || null) as "sedentary" | "active" | "heroic" | null,
+                sex: (sex || null) as "male" | "female" | null,
+                climate: (climate || null) as "cool" | "moderate" | "hot" | null,
+                activity_level: (activityLevel || null) as "sedentary" | "light" | "moderate" | "heavy" | null,
                 daily_water_goal_ml: waterGoal,
-                mission: (mission || null) as "stone_smasher" | "hydration_hero" | "skin_glow" | null,
             } : prev);
             setSaved(true);
             setEditing(false);
@@ -92,8 +97,9 @@ export default function ProfilePage() {
         if (profile) {
             setUsername(profile.username || "");
             setWeightKg(profile.weight_kg || "");
-            setActivityLevel(profile.activity_level || "");
-            setMission(profile.mission || "");
+            setSex(profile.sex || "");
+            setClimate(profile.climate || "");
+            setActivityLevel((profile.activity_level as any) || "");
         }
         setEditing(false);
     };
@@ -106,16 +112,11 @@ export default function ProfilePage() {
         ? Math.round(profile.weight_kg / 0.453592)
         : profile?.weight_kg;
 
-    const missionLabels: Record<string, string> = {
-        stone_smasher: "STONE SMASHER",
-        hydration_hero: "HYDRATION HERO",
-        skin_glow: "SKIN GLOW",
-    };
-
     const activityLabels: Record<string, string> = {
         sedentary: "SEDENTARY",
-        active: "ACTIVE",
-        heroic: "HEROIC",
+        light: "LIGHT",
+        moderate: "MODERATE",
+        heavy: "HEAVY",
     };
 
     return (
@@ -193,28 +194,37 @@ export default function ProfilePage() {
                                     />
                                 </div>
 
+                                {/* Sex */}
+                                <div className="profile-field">
+                                    <label className="onboard-label">BIOLOGICAL SEX</label>
+                                    <SexPicker
+                                        value={sex}
+                                        onChange={s => setSex(s as any)}
+                                    />
+                                </div>
+
                                 {/* Activity Level */}
                                 <div className="profile-field">
                                     <label className="onboard-label">ACTIVITY LEVEL</label>
                                     <ActivityPicker
                                         value={activityLevel}
-                                        onChange={level => setActivityLevel(level)}
+                                        onChange={level => setActivityLevel(level as any)}
                                     />
                                 </div>
 
-                                {/* Mission */}
+                                {/* Climate */}
                                 <div className="profile-field">
-                                    <label className="onboard-label">MISSION</label>
-                                    <MissionPicker
-                                        value={mission}
-                                        onChange={m => setMission(m)}
+                                    <label className="onboard-label">TYPICAL CLIMATE</label>
+                                    <ClimatePicker
+                                        value={climate}
+                                        onChange={c => setClimate(c as any)}
                                     />
                                 </div>
 
                                 {/* Water Goal Preview */}
-                                {weightKg !== "" && activityLevel && (
+                                {weightKg !== "" && sex && activityLevel && climate && (
                                     <div className="water-goal-preview">
-                                        Calculated daily water goal: <strong>{calculateWaterGoal(weightKg, weightUnit)} ml</strong>
+                                        Calculated daily water goal: <strong>{calculateWaterGoal(weightKg, weightUnit, sex as any, activityLevel as any, climate as any)} ml</strong>
                                     </div>
                                 )}
                             </div>
@@ -231,10 +241,6 @@ export default function ProfilePage() {
                                 <div className="profile-stat-row">
                                     <span className="profile-stat-label">WATER GOAL</span>
                                     <span className="profile-stat-value">{profile?.daily_water_goal_ml || 2000} ML / DAY</span>
-                                </div>
-                                <div className="profile-stat-row">
-                                    <span className="profile-stat-label">MISSION</span>
-                                    <span className="profile-stat-value">{missionLabels[profile?.mission || ""] || "—"}</span>
                                 </div>
                             </div>
                         )}

@@ -17,20 +17,28 @@ export default function ActivityPicker({ value, onChange }: ActivityPickerProps)
                 <div className="activity-desc">Desk warrior</div>
             </div>
             <div
-                className={`activity-card ${value === 'active' ? 'selected' : ''}`}
-                onClick={() => onChange('active')}
+                className={`activity-card ${value === 'light' ? 'selected' : ''}`}
+                onClick={() => onChange('light')}
             >
-                <div className="activity-icon">&#x1F45F;</div>
-                <div className="activity-name">ACTIVE</div>
-                <div className="activity-desc">Regular mover</div>
+                <div className="activity-icon">&#x1F6B6;</div>
+                <div className="activity-name">LIGHT</div>
+                <div className="activity-desc">Occasional walks</div>
             </div>
             <div
-                className={`activity-card ${value === 'heroic' ? 'selected' : ''}`}
-                onClick={() => onChange('heroic')}
+                className={`activity-card ${value === 'moderate' ? 'selected' : ''}`}
+                onClick={() => onChange('moderate')}
+            >
+                <div className="activity-icon">&#x1F45F;</div>
+                <div className="activity-name">MODERATE</div>
+                <div className="activity-desc">Regular exercise</div>
+            </div>
+            <div
+                className={`activity-card ${value === 'heavy' ? 'selected' : ''}`}
+                onClick={() => onChange('heavy')}
             >
                 <div className="activity-icon">&#x26A1;</div>
-                <div className="activity-name">HEROIC</div>
-                <div className="activity-desc">Peak performance</div>
+                <div className="activity-name">HEAVY</div>
+                <div className="activity-desc">Intense training</div>
             </div>
         </div>
     );
