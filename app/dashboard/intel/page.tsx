@@ -34,7 +34,7 @@ export default function IntelPage() {
             <div className="dash-main">
                 {/* HEADER */}
                 <div className="dash-header">
-                    <h1 className="dash-header-title">INTEL BRIEFING</h1>
+                    <h1 className="dash-header-title">INFORMATION</h1>
                     <div className="dash-header-right">
                         <span className="intel-classified-badge">&#x1F512; CLASSIFIED</span>
                     </div>
@@ -64,19 +64,19 @@ export default function IntelPage() {
                                     <div className="intel-fact">
                                         <span className="intel-fact-icon">&#x1F9EC;</span>
                                         <div>
-                                            <strong>THE NEPHRON SQUAD:</strong> Each kidney houses approximately <strong>1 million nephrons</strong> &mdash; tiny filtration units that work around the clock to clean your blood. Think of them as a million-strong superhero team!
+                                            <strong>NEPHRONS:</strong> each kidney contains about one million nephrons, tiny filtration units that continuously clean your blood. They work together to maintain your body&apos;s balance and health.
                                         </div>
                                     </div>
                                     <div className="intel-fact">
                                         <span className="intel-fact-icon">&#x1F4AA;</span>
                                         <div>
-                                            <strong>THE WORKLOAD:</strong> Your kidneys filter roughly <strong>50 gallons of blood every single day</strong> &mdash; that&apos;s more than a bathtub full! They never take a break.
+                                            <strong>WORKLOAD:</strong> Your kidneys filter roughly 50 gallons of blood every day &mdash; more than a bathtub full &mdash; without taking a break.
                                         </div>
                                     </div>
                                     <div className="intel-fact">
                                         <span className="intel-fact-icon">&#x1F4A7;</span>
                                         <div>
-                                            <strong>THE PLUMBING:</strong> Hydration acts as a <strong>lubricant and pressure regulator</strong>, ensuring the inner kidney (medulla) receives enough oxygen to survive the high-energy task of filtration. Without enough water, your filters lose power!
+                                            <strong>HYDRATION:</strong> Drinking enough water helps your kidneys maintain proper blood flow and oxygen supply to the filtration units. Adequate hydration ensures your kidneys work efficiently and stay healthy.
                                         </div>
                                     </div>
                                 </div>
@@ -84,13 +84,13 @@ export default function IntelPage() {
                         )}
                     </div>
 
-                    {/* CARD 2: THE 3 VILLAINS */}
+                    {/* CARD 2: EVERYDAY RISKS */}
                     <div className={`dash-card intel-card ${expandedCard === "villains" ? "intel-card-open" : ""}`}>
                         <div className="intel-card-header" onClick={() => toggleCard("villains")}>
                             <div className="intel-card-header-left">
-                                <span className="intel-card-icon intel-card-icon-red">&#x1F9B9;</span>
+                                <span className="intel-card-icon intel-card-icon-red">&#x26A0;&#xFE0F;</span>
                                 <div>
-                                    <h3 className="dash-card-title">THE 3 VILLAINS</h3>
+                                    <h3 className="dash-card-title">EVERYDAY RISKS</h3>
                                     <span className="intel-card-subtitle">Kidney Stressors</span>
                                 </div>
                             </div>
@@ -99,82 +99,61 @@ export default function IntelPage() {
                         {expandedCard === "villains" && (
                             <div className="intel-card-body">
                                 <p className="intel-card-intro">
-                                    Three everyday factors silently stress your kidneys. Click each villain to learn their tactics:
+                                    Three everyday factors silently stress your kidneys. Click each risk to learn more:
                                 </p>
                                 <div className="villain-cards">
-                                    {/* VILLAIN 1: DEHYDRATION */}
+                                    {/* RISK 1: DEHYDRATION */}
                                     <div className={`villain-card ${expandedVillain === "dehydration" ? "villain-card-open" : ""}`}>
                                         <div
                                             className="villain-card-header villain-dehydration"
                                             onClick={(e) => toggleVillain("dehydration", e)}
                                         >
                                             <span className="villain-icon">&#x1F3DC;&#xFE0F;</span>
-                                            <span className="villain-name">THE VILLAIN: DEHYDRATION</span>
+                                            <span className="villain-name">RISK: DEHYDRATION</span>
                                             <span className="villain-chevron">{expandedVillain === "dehydration" ? "\u25B2" : "\u25BC"}</span>
                                         </div>
                                         {expandedVillain === "dehydration" && (
                                             <div className="villain-card-body">
                                                 <p>
-                                                    Low water intake makes urine more concentrated, increasing the workload on your nephrons.
-                                                </p>
-                                                <p>
-                                                    <strong>The Stone Forming Belt:</strong> Residents in hot climates, including the Philippines, face a significantly higher risk of dehydration and stone formation.
-                                                </p>
-                                                <p>
-                                                    <strong>The Result:</strong> When fluid is low, concentrations of calcium, oxalate, and uric acid rise, leading to <strong>&ldquo;supersaturation&rdquo;</strong> &mdash; the primary trigger for kidney stones. Stay hydrated to keep this villain at bay!
+                                                    Low water intake makes urine more concentrated, increasing the workload on your nephrons. People living in hot climates, including the Philippines, face a higher risk of dehydration and kidney stone formation. When fluid levels are low, concentrations of calcium, oxalate, and uric acid rise, which can trigger kidney stones. Staying adequately hydrated helps your kidneys work efficiently and reduces this risk.
                                                 </p>
                                             </div>
                                         )}
                                     </div>
 
-                                    {/* VILLAIN 2: SALT OVERLOAD */}
+                                    {/* RISK 2: SALT OVERLOAD */}
                                     <div className={`villain-card ${expandedVillain === "salt" ? "villain-card-open" : ""}`}>
                                         <div
                                             className="villain-card-header villain-salt"
                                             onClick={(e) => toggleVillain("salt", e)}
                                         >
                                             <span className="villain-icon">&#x1F9C2;</span>
-                                            <span className="villain-name">THE VILLAIN: SALT OVERLOAD</span>
+                                            <span className="villain-name">RISK: SALT OVERLOAD</span>
                                             <span className="villain-chevron">{expandedVillain === "salt" ? "\u25B2" : "\u25BC"}</span>
                                         </div>
                                         {expandedVillain === "salt" && (
                                             <div className="villain-card-body">
                                                 <p>
-                                                    Many students consume processed snacks and fast foods that are high in sodium.
-                                                </p>
-                                                <p>
-                                                    <strong>The Limit:</strong> The WHO recommends less than <strong>2g of sodium per day</strong> (approx. 5g of salt).
-                                                </p>
-                                                <p>
-                                                    <strong>Silent Stress:</strong> High salt increases <strong>&ldquo;glomerular hyperfiltration&rdquo;</strong> (kidney filtration pressure), which can strain the kidneys even if you feel perfectly fine. Watch out for processed foods and fast food!
+                                                    Many students consume processed snacks and fast foods that are high in sodium. The World Health Organization recommends less than 2 grams of sodium per day (about 5 grams of salt). High sodium intake can increase kidney filtration pressure (glomerular hyperfiltration), which strains the kidneys even if you feel fine. Limiting processed and fast foods helps reduce this silent stress.
                                                 </p>
                                             </div>
                                         )}
                                     </div>
 
-                                    {/* VILLAIN 3: NSAID ABUSE */}
+                                    {/* RISK 3: NSAID ABUSE */}
                                     <div className={`villain-card ${expandedVillain === "nsaid" ? "villain-card-open" : ""}`}>
                                         <div
                                             className="villain-card-header villain-nsaid"
                                             onClick={(e) => toggleVillain("nsaid", e)}
                                         >
                                             <span className="villain-icon">&#x1F48A;</span>
-                                            <span className="villain-name">THE VILLAIN: NSAID ABUSE</span>
+                                            <span className="villain-name">RISK: OVER-THE-COUNTER PAIN RELIEVERS ABUSE</span>
                                             <span className="villain-chevron">{expandedVillain === "nsaid" ? "\u25B2" : "\u25BC"}</span>
                                         </div>
                                         {expandedVillain === "nsaid" && (
                                             <div className="villain-card-body">
                                                 <p>
-                                                    Common pain relievers like ibuprofen are called NSAIDs (Non-Steroidal Anti-Inflammatory Drugs).
-                                                </p>
-                                                <p>
-                                                    <strong>The Problem:</strong> They reduce the production of <strong>prostaglandins</strong> &mdash; chemicals that help keep your kidneys well-perfused with blood.
-                                                </p>
-                                                <p>
-                                                    <strong>The Risk:</strong> Chronic use can reduce blood flow and cause <strong>&ldquo;tubular collapse.&rdquo;</strong>
-                                                </p>
-                                                <p className="villain-warning">
-                                                    &#x26A0;&#xFE0F; <strong>NEVER take NSAIDs while dehydrated!</strong> Dehydration + NSAIDs creates a dangerous &ldquo;pre-renal state&rdquo; of injury.
+                                                    Common over-the-counter pain medications, including NSAIDs like ibuprofen, reduce the production of prostaglandins &mdash; chemicals that help maintain healthy blood flow to the kidneys. Chronic or excessive use can reduce kidney blood flow and harm kidney tissue.
                                                 </p>
                                             </div>
                                         )}

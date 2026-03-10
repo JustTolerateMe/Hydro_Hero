@@ -272,7 +272,6 @@ export default function Dashboard() {
                                 <div className="hydration-amount">
                                     {dailyHydration} / {hydrationGoal} ml
                                 </div>
-                                <div className="hydration-moon">&#x1F319;</div>
                             </div>
                             <div className="hydration-actions">
                                 <button className="hydration-add-btn subtract" onClick={() => addWater(-100)}>

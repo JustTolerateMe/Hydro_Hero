@@ -1635,25 +1635,26 @@ body::after {
 }
 
 .urine-drop {
-    width: 40px;
-    height: 50px;
+    width: 44px;
+    height: 44px;
     border: 3px solid var(--black);
-    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    border-radius: 50% 0 50% 50%;
+    transform: rotate(-45deg);
     cursor: pointer;
     transition: transform 0.15s, box-shadow 0.15s;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 2px 2px 0 var(--black);
 }
 
 .urine-drop:hover {
-    transform: scale(1.15);
+    transform: rotate(-45deg) scale(1.15);
     box-shadow: 3px 3px 0 var(--black);
 }
 
 .urine-drop.selected {
-    transform: scale(1.2);
+    transform: rotate(-45deg) scale(1.2);
     box-shadow: 4px 4px 0 var(--black);
 }
 
@@ -1661,6 +1662,7 @@ body::after {
     font-size: 1.2rem;
     font-weight: bold;
     color: var(--black);
+    transform: rotate(45deg);
 }
 
 /* ---------- URINE LOGGER ENHANCED ---------- */
@@ -1676,7 +1678,7 @@ body::after {
 
 .urine-drop-small {
     width: 36px;
-    height: 44px;
+    height: 36px;
 }
 
 /* Expand Button */
@@ -2208,10 +2210,11 @@ body::after {
 
 .urine-compare-swatch {
     width: 50px;
-    height: 62px;
+    height: 50px;
     margin: 0 auto 0.4rem;
     border: 3px solid var(--black);
-    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    border-radius: 50% 0 50% 50%;
+    transform: rotate(-45deg);
     box-shadow: 2px 2px 0 var(--black);
 }
 

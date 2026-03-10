@@ -27,28 +27,28 @@ export default function Sidebar({ user, profile }: SidebarProps) {
                         onClick={() => router.push('/dashboard')}
                     >
                         <span className="dash-nav-icon">&#x2B1A;</span>
-                        <span className="dash-nav-label">BASE CAMP</span>
+                        <span className="dash-nav-label">DASHBOARD</span>
                     </div>
                     <div
                         className={`dash-nav-item ${pathname === '/dashboard/meds' ? 'active' : ''}`}
                         onClick={() => router.push('/dashboard/meds')}
                     >
                         <span className="dash-nav-icon">&#x1F48A;</span>
-                        <span className="dash-nav-label">MEDS LOG</span>
+                        <span className="dash-nav-label">MEDICATION LOG</span>
                     </div>
                     <div
                         className={`dash-nav-item ${pathname === '/dashboard/profile' ? 'active' : ''}`}
                         onClick={() => router.push('/dashboard/profile')}
                     >
                         <span className="dash-nav-icon">&#x1F9B8;</span>
-                        <span className="dash-nav-label">HERO ID</span>
+                        <span className="dash-nav-label">PROFILE</span>
                     </div>
                     <div
                         className={`dash-nav-item ${pathname === '/dashboard/intel' ? 'active' : ''}`}
                         onClick={() => router.push('/dashboard/intel')}
                     >
                         <span className="dash-nav-icon">&#x1F4CB;</span>
-                        <span className="dash-nav-label">INTEL</span>
+                        <span className="dash-nav-label">INFORMATION</span>
                     </div>
                     <div
                         className={`dash-nav-item ${pathname === '/dashboard/settings' ? 'active' : ''}`}
@@ -96,7 +96,7 @@ export default function Sidebar({ user, profile }: SidebarProps) {
                     onClick={() => router.push('/dashboard')}
                 >
                     <span className="mobile-nav-icon">&#x2B1A;</span>
-                    <span className="mobile-nav-label">HOME</span>
+                    <span className="mobile-nav-label">DASH</span>
                 </div>
                 <div
                     className={`mobile-nav-item ${pathname === '/dashboard/meds' ? 'active' : ''}`}
@@ -110,14 +110,14 @@ export default function Sidebar({ user, profile }: SidebarProps) {
                     onClick={() => router.push('/dashboard/profile')}
                 >
                     <span className="mobile-nav-icon">&#x1F9B8;</span>
-                    <span className="mobile-nav-label">HERO</span>
+                    <span className="mobile-nav-label">PROFILE</span>
                 </div>
                 <div
                     className={`mobile-nav-item ${pathname === '/dashboard/intel' ? 'active' : ''}`}
                     onClick={() => router.push('/dashboard/intel')}
                 >
                     <span className="mobile-nav-icon">&#x1F4CB;</span>
-                    <span className="mobile-nav-label">INTEL</span>
+                    <span className="mobile-nav-label">INFO</span>
                 </div>
                 <div
                     className={`mobile-nav-item ${pathname === '/dashboard/settings' ? 'active' : ''}`}
