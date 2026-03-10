@@ -274,6 +274,22 @@ export default function IntelPage() {
 
                 </div>
 
+                {/* CITATIONS & REFERENCES */}
+                <div className="dash-card intel-funfacts" style={{ marginTop: '1rem', marginBottom: '1.5rem', marginInline: '1.5rem' }}>
+                    <div className="dash-card-header">
+                        <h3 className="dash-card-title">&#x1F4DA; REFERENCES</h3>
+                    </div>
+                    <div className="intel-funfacts-body">
+                        <div className="intel-funfact" style={{ alignItems: 'flex-start' }}>
+                            <span className="intel-funfact-icon">&#x1F4D6;</span>
+                            <span style={{ lineHeight: '1.5' }}>
+                                <strong>Hydration Formula & Research Basis:</strong><br />
+                                Yamada, Y., et al. (2022). Variation in human water turnover associated with environmental and lifestyle factors. <em>Science</em>, 378(6622), 909-915. <a href="https://doi.org/10.1126/science.abm8668" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--blue)', textDecoration: 'underline' }}>doi:10.1126/science.abm8668</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
                 {/* MEDICAL DISCLAIMER */}
                 <div className="intel-disclaimer">
                     <div className="intel-disclaimer-icon">&#x26A0;&#xFE0F;</div>
