@@ -287,6 +287,13 @@ export default function IntelPage() {
                                 Yamada, Y., et al. (2022). Variation in human water turnover associated with environmental and lifestyle factors. <em>Science</em>, 378(6622), 909-915. <a href="https://doi.org/10.1126/science.abm8668" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--blue)', textDecoration: 'underline' }}>doi:10.1126/science.abm8668</a>
                             </span>
                         </div>
+                        <div className="intel-funfact" style={{ alignItems: 'flex-start', marginTop: '1rem' }}>
+                            <span className="intel-funfact-icon">&#x1F4D6;</span>
+                            <span style={{ lineHeight: '1.5' }}>
+                                <strong>Urine Color Comparison Guide:</strong><br />
+                                Healthline. (n.d.). Urine color chart. Retrieved from <a href="https://www.healthline.com/health/urine-color-chart" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--blue)', textDecoration: 'underline' }}>https://www.healthline.com/health/urine-color-chart</a>
+                            </span>
+                        </div>
                     </div>
                 </div>
 
